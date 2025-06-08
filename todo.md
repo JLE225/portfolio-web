@@ -1,2 +1,2 @@
-fix drag untuk pindahkan window
-fix animasi lebih smooth
+Buat aplikasi Calculator
+Buat aplikasi Game yang gampang
