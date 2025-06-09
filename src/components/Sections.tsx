@@ -1,4 +1,5 @@
 "use client";
+import Calculator from "@/feature/Calculator";
 import About from "../feature/About";
 import Contact from "../feature/Contact";
 import Window from "./Window";
@@ -25,5 +26,11 @@ export const ProjectsSection = ({ onClose }: { onClose: () => void }) => (
 export const ContactSection = ({ onClose }: { onClose: () => void }) => (
   <Window title="Contact Me" onClose={onClose}>
     <Contact />
+  </Window>
+);
+
+export const CalculatorSection = ({ onClose }: { onClose: () => void }) => (
+  <Window title="Calculator" width="400px" onClose={onClose}>
+    <Calculator />
   </Window>
 );

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import { AboutSection, ProjectsSection, ContactSection } from "./Sections";
-import { User, Briefcase, Mail, X } from "lucide-react";
+import { AboutSection, ProjectsSection, ContactSection, CalculatorSection } from "./Sections";
+import { User, Briefcase, Mail, Calculator as CalculatorIcon, X } from "lucide-react";
 
 const Menu = () => {
   const [activeItem, setActiveItem] = useState<number | null>(null);
@@ -12,6 +12,7 @@ const Menu = () => {
     { id: 1, label: "About", icon: <User size={20} /> },
     { id: 2, label: "Projects", icon: <Briefcase size={20} /> },
     { id: 3, label: "Contact", icon: <Mail size={20} /> },
+    { id: 4, label: "Calculator", icon: <CalculatorIcon size={20} /> },
   ];
 
   const handleClick = (id: number) => {
@@ -30,6 +31,9 @@ const Menu = () => {
       )}
       {openSection === 3 && (
         <ContactSection onClose={() => setOpenSection(null)} />
+      )}
+      {openSection === 4 && (
+        <CalculatorSection onClose={() => setOpenSection(null)} />
       )}
 
       <div className="fixed bottom-5 left-1/2 transform -translate-x-1/2 py-2 px-4 bg-slate-800/90 backdrop-blur-lg flex justify-center items-center gap-4 rounded-full border border-slate-700/50 shadow-lg shadow-slate-900/30">
