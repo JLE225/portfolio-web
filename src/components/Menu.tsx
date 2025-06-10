@@ -12,7 +12,6 @@ const Menu = () => {
     { id: 1, label: "About", icon: <User size={20} /> },
     { id: 2, label: "Projects", icon: <Briefcase size={20} /> },
     { id: 3, label: "Contact", icon: <Mail size={20} /> },
-    { id: 4, label: "Calculator", icon: <CalculatorIcon size={20} /> },
   ];
 
   const handleClick = (id: number) => {

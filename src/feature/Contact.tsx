@@ -1,9 +1,72 @@
-import { Mail, MapPin, Phone, Send, Github, Twitter, Linkedin, Instagram } from "lucide-react";
-import React from "react";
+import {
+  Mail,
+  MapPin,
+  Phone,
+  Send,
+  Github,
+  Twitter,
+  Linkedin,
+  Instagram,
+} from "lucide-react";
+import React, { useState } from "react";
+import { Resend } from "resend";
 
 const Contact = () => {
+  const [formData, setFormData] = useState({
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const [isSending, setIsSending] = useState(false);
+  const [sendStatus, setSendStatus] = useState<{
+    success: boolean;
+    message: string;
+  } | null>(null);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSending(true);
+    setSendStatus(null);
+
+    try {
+      console.log("Sending email with data:", formData);
+      const resend = new Resend('re_JJA7chbo_DpNcSBsPoVyjSoqe6q4dTfaP');
+
+      await resend.emails.send({
+        from: "Portfolio Contact <onboarding@resend.dev>", // ✅ dari domain yang diverifikasi
+        to: "jlewhite225@gmail.com", // ✅ kamu sebagai penerima
+        subject: formData.subject,
+        text: formData.message,
+        replyTo: formData.email, // ✅ email pengisi form
+      });
+      console.log("Email sent successfully");
+
+      setSendStatus({ success: true, message: "Message sent successfully!" });
+      setFormData({ email: "", subject: "", message: "" });
+    } catch (error) {
+      console.error("Failed to send email:", error);
+      setSendStatus({
+        success: false,
+        message: "Failed to send message. Please try again.",
+      });
+    } finally {
+      setIsSending(false);
+    }
+  };
+
   return (
     <div className="flex flex-col md:flex-row h-full text-white min-h-[500px]">
+      {/* Bagian kiri (kontak informasi) tetap sama */}
       <div className="bg-slate-700/70 p-4 sm:p-6 rounded-l-lg border-r border-slate-600 w-full md:w-1/2">
         <h2 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent mb-6">
           Let's Connect
@@ -31,11 +94,11 @@ const Contact = () => {
             },
           ].map(({ icon, label, value, bg }, i) => (
             <div className="flex items-start gap-3" key={i}>
-              <div className={`${bg} p-2 rounded-lg`}>
-                {icon}
-              </div>
+              <div className={`${bg} p-2 rounded-lg`}>{icon}</div>
               <div>
-                <h3 className="text-xs sm:text-sm font-medium text-slate-400">{label}</h3>
+                <h3 className="text-xs sm:text-sm font-medium text-slate-400">
+                  {label}
+                </h3>
                 <p className="text-sm sm:text-base text-slate-300">{value}</p>
               </div>
             </div>
@@ -43,7 +106,9 @@ const Contact = () => {
         </div>
 
         <div className="mt-8">
-          <h3 className="text-xs sm:text-sm font-medium text-slate-400 mb-3">Follow Me</h3>
+          <h3 className="text-xs sm:text-sm font-medium text-slate-400 mb-3">
+            Follow Me
+          </h3>
           <div className="flex gap-2 sm:gap-3 flex-wrap">
             {[
               { Icon: Github, label: "GitHub" },
@@ -63,6 +128,7 @@ const Contact = () => {
         </div>
       </div>
 
+      {/* Bagian kanan (form) dengan penyesuaian */}
       <div className="p-4 sm:p-6 w-full md:w-2/3">
         <h2 className="text-lg sm:text-xl font-bold text-slate-300 mb-2">
           Send a Message
@@ -71,7 +137,7 @@ const Contact = () => {
           Have a question or want to work together? Fill out the form below.
         </p>
 
-        <form className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
             <div>
               <label className="block text-xs sm:text-sm font-medium text-slate-400 mb-1">
@@ -81,8 +147,12 @@ const Contact = () => {
                 <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-500" />
                 <input
                   type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   className="w-full bg-slate-700/50 border border-slate-600 rounded-lg pl-9 pr-3 py-2 text-sm sm:text-base focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none transition-all"
                   placeholder="your@email.com"
+                  required
                 />
               </div>
             </div>
@@ -93,8 +163,12 @@ const Contact = () => {
               </label>
               <input
                 type="text"
+                name="subject"
+                value={formData.subject}
+                onChange={handleChange}
                 className="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm sm:text-base focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none transition-all"
                 placeholder="What's this about?"
+                required
               />
             </div>
           </div>
@@ -104,19 +178,44 @@ const Contact = () => {
               Message
             </label>
             <textarea
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
               rows={5}
               className="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-sm sm:text-base focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none transition-all"
               placeholder="Your message here..."
+              required
             ></textarea>
           </div>
 
+          {sendStatus && (
+            <div
+              className={`p-3 rounded-lg text-sm ${
+                sendStatus.success
+                  ? "bg-green-500/20 text-green-400"
+                  : "bg-red-500/20 text-red-400"
+              }`}
+            >
+              {sendStatus.message}
+            </div>
+          )}
+
           <div className="flex items-center justify-end pt-2">
             <button
-              type="button"
-              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-5 sm:px-6 py-2 rounded-lg font-medium flex items-center gap-2 transition-all shadow-lg hover:shadow-blue-500/20"
+              type="submit"
+              disabled={isSending}
+              className={`bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-5 sm:px-6 py-2 rounded-lg font-medium flex items-center gap-2 transition-all shadow-lg hover:shadow-blue-500/20 ${
+                isSending ? "opacity-70 cursor-not-allowed" : ""
+              }`}
             >
-              <Send className="w-4 h-4" />
-              Send Message
+              {isSending ? (
+                "Sending..."
+              ) : (
+                <>
+                  <Send className="w-4 h-4" />
+                  Send Message
+                </>
+              )}
             </button>
           </div>
         </form>
