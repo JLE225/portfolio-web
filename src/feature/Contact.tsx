@@ -9,7 +9,6 @@ import {
   Instagram,
 } from "lucide-react";
 import React, { useState } from "react";
-import { Resend } from "resend";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -33,28 +32,39 @@ const Contact = () => {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSending(true);
     setSendStatus(null);
 
+    const data = {
+      access_key: process.env.NEXT_PUBLIC_EMAIL_KEY,
+      email: formData.email,
+      subject: formData.subject,
+      message: formData.message,
+    };
+
     try {
-      console.log("Sending email with data:", formData);
-      const resend = new Resend('re_JJA7chbo_DpNcSBsPoVyjSoqe6q4dTfaP');
-
-      await resend.emails.send({
-        from: "Portfolio Contact <onboarding@resend.dev>", // ✅ dari domain yang diverifikasi
-        to: "jlewhite225@gmail.com", // ✅ kamu sebagai penerima
-        subject: formData.subject,
-        text: formData.message,
-        replyTo: formData.email, // ✅ email pengisi form
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       });
-      console.log("Email sent successfully");
 
-      setSendStatus({ success: true, message: "Message sent successfully!" });
-      setFormData({ email: "", subject: "", message: "" });
+      const result = await response.json();
+
+      if (result.success) {
+        setSendStatus({ success: true, message: "Message sent successfully!" });
+        setFormData({ email: "", subject: "", message: "" });
+      } else {
+        setSendStatus({
+          success: false,
+          message: result.message || "Failed to send message.",
+        });
+      }
     } catch (error) {
-      console.error("Failed to send email:", error);
       setSendStatus({
         success: false,
         message: "Failed to send message. Please try again.",
@@ -66,12 +76,10 @@ const Contact = () => {
 
   return (
     <div className="flex flex-col md:flex-row h-full text-white min-h-[500px]">
-      {/* Bagian kiri (kontak informasi) tetap sama */}
       <div className="bg-slate-700/70 p-4 sm:p-6 rounded-l-lg border-r border-slate-600 w-full md:w-1/2">
-        <h2 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent mb-6">
+        <h2 className="text-lg sm:text-xl font-bold text-blue-400 mb-6">
           Let's Connect
         </h2>
-
         <div className="space-y-5">
           {[
             {
@@ -111,24 +119,42 @@ const Contact = () => {
           </h3>
           <div className="flex gap-2 sm:gap-3 flex-wrap">
             {[
-              { Icon: Github, label: "GitHub" },
-              { Icon: Twitter, label: "Twitter" },
-              { Icon: Instagram, label: "Instagram" },
-              { Icon: Linkedin, label: "LinkedIn" },
-            ].map(({ Icon, label }, i) => (
-              <button
+              {
+                Icon: Github,
+                label: "GitHub",
+                url: "https://github.com/JLE225",
+              },
+              {
+                Icon: Twitter,
+                label: "Twitter",
+                url: "https://x.com/jaretsijangkung",
+              },
+              {
+                Icon: Instagram,
+                label: "Instagram",
+                url: "https://www.instagram.com/jared255_",
+              },
+              {
+                Icon: Linkedin,
+                label: "LinkedIn",
+                url: "https://www.linkedin.com/in/jaredlewis225",
+              },
+            ].map(({ Icon, label, url }, i) => (
+              <a
                 key={i}
-                className="bg-slate-600/50 hover:bg-slate-600/70 p-2 rounded-lg transition-all"
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label={label}
+                className="bg-slate-600/50 hover:bg-slate-600/70 p-2 rounded-lg transition-all"
               >
                 <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-slate-300" />
-              </button>
+              </a>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Bagian kanan (form) dengan penyesuaian */}
       <div className="p-4 sm:p-6 w-full md:w-2/3">
         <h2 className="text-lg sm:text-xl font-bold text-slate-300 mb-2">
           Send a Message
@@ -204,7 +230,7 @@ const Contact = () => {
             <button
               type="submit"
               disabled={isSending}
-              className={`bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-5 sm:px-6 py-2 rounded-lg font-medium flex items-center gap-2 transition-all shadow-lg hover:shadow-blue-500/20 ${
+              className={`bg-blue-500 text-white px-5 sm:px-6 py-2 rounded-lg font-medium flex items-center gap-2 transition-all shadow-lg hover:shadow-blue-500/20 ${
                 isSending ? "opacity-70 cursor-not-allowed" : ""
               }`}
             >

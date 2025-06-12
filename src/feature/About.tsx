@@ -15,8 +15,8 @@ const About = () => {
         </div>
 
         <div className="flex flex-col justify-center text-center sm:text-left">
-          <h1 className="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent leading-tight">
-            Jared Lewis
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-blue-400 leading-tight">
+            Jared Lewis Ezekiel White
           </h1>
           <p className="mt-1 text-lg sm:text-xl text-slate-300 font-light tracking-wide">
             Front End Developer & Back End Enthusiast
@@ -24,7 +24,6 @@ const About = () => {
         </div>
       </div>
 
-      {/* About Me Section */}
       <div className="space-y-8">
         <section className="bg-slate-700/50 p-6 rounded-lg border border-slate-600 shadow-md hover:shadow-lg transition-shadow duration-300">
           <h2 className="text-xl sm:text-2xl font-semibold mb-3">About Me</h2>
@@ -36,7 +35,6 @@ const About = () => {
           </p>
         </section>
 
-        {/* Skills & Experience Side by Side */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <section className="bg-slate-700/50 p-6 rounded-lg border border-slate-600 shadow-md hover:shadow-lg transition-shadow duration-300">
             <h3 className="font-semibold mb-3 text-lg sm:text-xl">Skills</h3>
@@ -71,15 +69,6 @@ const About = () => {
             </ul>
           </section>
         </div>
-
-        {/*
-        <section className="bg-slate-700/50 p-6 rounded-lg border border-slate-600 shadow-md hover:shadow-lg transition-shadow duration-300">
-          <h3 className="font-semibold mb-3 text-lg sm:text-xl">When I'm Not Coding</h3>
-          <p className="text-slate-300 text-base sm:text-lg leading-relaxed">
-            I enjoy photography, hiking, and contributing to open source projects.
-            I believe in continuous learning and sharing knowledge with the community.
-          </p>
-        </section> */}
       </div>
     </div>
   );

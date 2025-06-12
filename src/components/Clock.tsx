@@ -6,7 +6,7 @@ const Clock = () => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true); // Mencegah SSR render
+    setMounted(true);
     const updateTime = () => setCurrentTime(new Date());
 
     const now = new Date();

@@ -10,7 +10,7 @@ const Menu = () => {
 
   const menuItems = [
     { id: 1, label: "About", icon: <User size={20} /> },
-    { id: 2, label: "Projects", icon: <Briefcase size={20} /> },
+    { id: 2, label: "Project", icon: <Briefcase size={20} /> },
     { id: 3, label: "Contact", icon: <Mail size={20} /> },
   ];
 

@@ -3,10 +3,10 @@ import Clock from "./Clock";
 
 const Header = () => {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-slate-800/90 backdrop-blur-lg border-b border-slate-700/50">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-slate-800/90 backdrop-blur-lg border-b border-slate-700/50 select-none">
       <div className=" mx-auto flex items-center justify-between h-6 px-4 select-none">
         <h1 className="text-white text-sm font-thin tracking-wide">
-          JaredDev
+          Jared Lewis Ezekiel White
         </h1>
         <div>
           <Clock />

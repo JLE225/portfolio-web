@@ -9,6 +9,8 @@ interface WindowProps {
   width?: string;
   height?: string;
   initialPosition?: { x: number; y: number };
+  headerClassName?: string;
+  disableFullscreen?: boolean;
 }
 
 const Window = ({
@@ -18,6 +20,8 @@ const Window = ({
   width = "800px",
   height = "600px",
   initialPosition,
+  headerClassName,
+  disableFullscreen,
 }: WindowProps) => {
   const [position, setPosition] = useState(() => {
     if (initialPosition) {
@@ -147,23 +151,20 @@ const Window = ({
           >
             <div
               data-draggable
-              className="title-bar bg-slate-900/95 px-4 py-2 border-b border-slate-700 flex items-center justify-between select-none cursor-grab active:cursor-grabbing"
+              className={`title-bar px-4 py-2 border-b border-slate-700 flex items-center justify-between select-none cursor-grab active:cursor-grabbing bg-slate-900/95 ${headerClassName || ""}`}
               onPointerDown={handlePointerDown}
-              onDoubleClick={handleMaximize}
+              onDoubleClick={() => {
+                if (!disableFullscreen) handleMaximize();
+              }}
               style={{ userSelect: "none" }}
             >
               <div className="flex items-center space-x-3">
                 <button
-                  onClick={onClose}
-                  className="w-3 h-3 rounded-full bg-[#FF5F56] border border-[#E0443E] hover:brightness-125 transition-all shadow-md"
-                  aria-label="Close"
-                />
-                <button
                   onClick={handleMinimize}
-                  className="w-3 h-3 rounded-full bg-[#FFBD2E] border border-[#DEA123] hover:brightness-125 transition-all shadow-md"
+                  className="w-3 h-3 rounded-full bg-[#FF5F56] border border-[#E0443E] hover:brightness-125 transition-all shadow-md"
                   aria-label="Minimize"
                 />
-                {!isMobile && (
+                {!isMobile && !disableFullscreen && (
                   <button
                     onClick={handleMaximize}
                     className="w-3 h-3 rounded-full bg-[#27C93F] border border-[#1AAB29] hover:brightness-125 transition-all shadow-md"
@@ -172,18 +173,11 @@ const Window = ({
                 )}
               </div>
 
-              <motion.div
-                className="text-sm text-slate-300 font-semibold select-none"
-                animate={{ opacity: isDragging ? 0.7 : 1 }}
-              >
-                {title}
-              </motion.div>
-
               <div className="w-12"></div>
             </div>
 
             <motion.div
-              className="flex-1 overflow-auto p-6 bg-slate-800/90 custom-scrollbar"
+              className="flex-1 overflow-auto bg-slate-800/90 custom-scrollbar"
               animate={{ opacity: isDragging ? 0.9 : 1 }}
             >
               {children}
