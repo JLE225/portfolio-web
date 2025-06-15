@@ -16,12 +16,20 @@ export const ProjectsSection = ({ onClose }: { onClose: () => void }) => (
     <div className="flex items-center justify-center w-full h-full">
       <p className="text-white text-3xl font-bold">Coming Soon</p>
     </div>
-  </Window>
+  </Window> 
 );
 
 export const ContactSection = ({ onClose }: { onClose: () => void }) => (
   <Window title="Contact" onClose={onClose}>
     <Contact />
+  </Window>
+);
+
+export const CvSection = ({ onClose }: { onClose: () => void }) => (
+  <Window title="Contact" onClose={onClose}>
+    <div className="flex items-center justify-center w-full h-full">
+      <p className="text-white text-3xl font-bold">Coming Soon</p>
+    </div>
   </Window>
 );
 

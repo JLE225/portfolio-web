@@ -19,7 +19,7 @@ const About = () => {
             Jared Lewis Ezekiel White
           </h1>
           <p className="mt-1 text-lg sm:text-xl text-slate-300 font-light tracking-wide">
-            Front End Developer & Back End Enthusiast
+            Full Stack Developer & Software Developer Enthusiast
           </p>
         </div>
       </div>
