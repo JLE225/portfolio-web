@@ -1,7 +1,17 @@
 "use client";
 import React, { useState } from "react";
-import { AboutSection, ProjectsSection, ContactSection, CalculatorSection, CvSection } from "./Sections";
-import { User, Briefcase, Mail, Calculator as CalculatorIcon, X, NotebookText } from "lucide-react";
+import {
+  AboutSection,
+  ProjectsSection,
+  ContactSection,
+} from "./Sections";
+import {
+  User,
+  Briefcase,
+  Mail,
+  X,
+  NotebookText,
+} from "lucide-react";
 
 const Menu = () => {
   const [activeItem, setActiveItem] = useState<number | null>(null);
@@ -12,12 +22,22 @@ const Menu = () => {
     { id: 1, label: "About", icon: <User size={20} /> },
     { id: 2, label: "Project", icon: <Briefcase size={20} /> },
     { id: 3, label: "Contact", icon: <Mail size={20} /> },
-    { id: 4, label: "Cv", icon: <NotebookText size={20} /> },
+    { id: 4, label: "CV", icon: <NotebookText size={20} />, download: true },
   ];
 
-  const handleClick = (id: number) => {
-    setClickedItem(id);
-    setOpenSection(openSection === id ? null : id);
+  const handleClick = (item: any) => {
+    if (item.download) {
+      const link = document.createElement("a");
+      link.href = "/cv/CV_JARED_LEWIS_EZEKIEL_WHITE.pdf";
+      link.download = "CV_JARED_LEWIS_EZEKIEL_WHITE.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      return;
+    }
+
+    setClickedItem(item.id);
+    setOpenSection(openSection === item.id ? null : item.id);
     setTimeout(() => setClickedItem(null), 300);
   };
 
@@ -32,9 +52,6 @@ const Menu = () => {
       {openSection === 3 && (
         <ContactSection onClose={() => setOpenSection(null)} />
       )}
-      {openSection === 4 && (
-        <CvSection onClose={() => setOpenSection(null)} />
-      )}
 
       <div className="fixed bottom-5 left-1/2 transform -translate-x-1/2 py-2 px-4 bg-slate-800/90 backdrop-blur-lg flex justify-center items-center gap-4 rounded-full border border-slate-700/50 shadow-lg shadow-slate-900/30">
         {menuItems.map((item) => (
@@ -44,26 +61,27 @@ const Menu = () => {
             onMouseEnter={() => setActiveItem(item.id)}
             onMouseLeave={() => setActiveItem(null)}
           >
+            {/* Tooltip */}
             <div
               className={`absolute -top-9 px-2.5 py-1 bg-slate-700 text-slate-200 text-xs font-medium rounded-md transition-all duration-200 opacity-0 pointer-events-none 
-              ${
-                activeItem === item.id
-                  ? "opacity-100 -translate-y-1"
-                  : "translate-y-2"
-              }`}
+        ${
+          activeItem === item.id
+            ? "opacity-100 -translate-y-1"
+            : "translate-y-2"
+        }`}
             >
               {item.label}
               <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1 w-2 h-2 bg-slate-700 rotate-45" />
             </div>
 
             <button
-              onClick={() => handleClick(item.id)}
+              onClick={() => handleClick(item)}
               className={`w-12 h-12 flex items-center justify-center rounded-full transition-all duration-300 ease-out-back ${
                 openSection === item.id
                   ? "bg-blue-500/90 text-white scale-110 shadow-md shadow-blue-500/30"
                   : activeItem === item.id
-                  ? "bg-slate-700/70 text-slate-200 scale-105"
-                  : "bg-slate-700/50 text-slate-300 hover:bg-slate-700/60 scale-100"
+                    ? "bg-slate-700/70 text-slate-200 scale-105"
+                    : "bg-slate-700/50 text-slate-300 hover:bg-slate-700/60 scale-100"
               } ${clickedItem === item.id ? "animate-ping-once" : ""}`}
             >
               <span
@@ -73,7 +91,11 @@ const Menu = () => {
                     : "scale-100"
                 }`}
               >
-                {openSection === item.id ? <X size={20} /> : item.icon}
+                {openSection === item.id && !item.download ? (
+                  <X size={20} />
+                ) : (
+                  item.icon
+                )}
               </span>
             </button>
           </div>
