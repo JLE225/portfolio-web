@@ -28,7 +28,7 @@ const Menu = () => {
   const handleClick = (item: any) => {
     if (item.download) {
       const link = document.createElement("a");
-      link.href = "/cv/CV_JARED_LEWIS_EZEKIEL_WHITE.pdf";
+      link.href = "/CV_JARED_LEWIS_EZEKIEL_WHITE.pdf";
       link.download = "CV_JARED_LEWIS_EZEKIEL_WHITE.pdf";
       document.body.appendChild(link);
       link.click();
