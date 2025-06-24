@@ -4,6 +4,7 @@ import About from "../feature/About";
 import Contact from "../feature/Contact";
 import Window from "./Window";
 import Notes from "@/feature/Notes";
+import Projects from "@/feature/Projects";
 
 export const AboutSection = ({ onClose }: { onClose: () => void }) => (
   <Window title="About" onClose={onClose}>
@@ -13,9 +14,7 @@ export const AboutSection = ({ onClose }: { onClose: () => void }) => (
 
 export const ProjectsSection = ({ onClose }: { onClose: () => void }) => (
   <Window title="Projects" onClose={onClose}>
-    <div className="flex items-center justify-center w-full h-full">
-      <p className="text-white text-3xl font-bold">Coming Soon</p>
-    </div>
+    <Projects />
   </Window>
 );
 
